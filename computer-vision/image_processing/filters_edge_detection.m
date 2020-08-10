@@ -59,8 +59,8 @@ gray2 = rgb2gray(froomer);
 
 edges1 = edge(gray1, 'canny');
 edges2 = edge(gray2, 'canny');
-imshow(edges1);
-imshow(edges2);
+figure, imshow(edges1);
+figure, imshow(edges2);
 
 
 % edge demo
