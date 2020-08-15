@@ -67,20 +67,6 @@
 #  This can be set to false to prevent changing password from the UI/API.
 #c.NotebookApp.allow_password_change = True
 
-## Allow requests where the Host header doesn't point to a local server
-#  
-#  By default, requests get a 403 forbidden response if the 'Host' header shows
-#  that the browser thinks it's on a non-local domain. Setting this option to
-#  True disables this check.
-#  
-#  This protects against 'DNS rebinding' attacks, where a remote web server
-#  serves you a page and then changes its DNS to send later requests to a local
-#  IP, bypassing same-origin checks.
-#  
-#  Local IP addresses (such as 127.0.0.1 and ::1) are allowed as local, along
-#  with hostnames configured in local_hostnames.
-#c.NotebookApp.allow_remote_access = False
-
 ## Whether to allow the user to run the notebook as root.
 #c.NotebookApp.allow_root = False
 
@@ -125,18 +111,6 @@
 
 ## The file where the cookie secret is stored.
 #c.NotebookApp.cookie_secret_file = ''
-
-## Override URL shown to users.
-#  
-#  Replace actual URL, including protocol, address, port and base URL, with the
-#  given value when displaying URL to the users. Do not change the actual
-#  connection URL. If authentication token is enabled, the token is added to the
-#  custom URL automatically.
-#  
-#  This option is intended to be used when the URL to display to the user cannot
-#  be determined reliably by the Jupyter notebook server (proxified or
-#  containerized setups for example).
-#c.NotebookApp.custom_display_url = ''
 
 ## The default URL to redirect to from `/`
 #c.NotebookApp.default_url = '/tree'
@@ -197,6 +171,7 @@
 #c.NotebookApp.iopub_msg_rate_limit = 1000
 
 ## The IP address the notebook server will listen on.
+#c.NotebookApp.ip = 'localhost'
 c.NotebookApp.ip = '0.0.0.0'
 
 ## Supply extra arguments that will be passed to Jinja environment.
@@ -217,12 +192,6 @@ c.NotebookApp.ip = '0.0.0.0'
 
 ## The full path to a private key file for usage with SSL/TLS.
 #c.NotebookApp.keyfile = ''
-
-## Hostnames to allow as local when allow_remote_access is False.
-#  
-#  Local IP addresses (such as 127.0.0.1 and ::1) are automatically accepted as
-#  local as well.
-#c.NotebookApp.local_hostnames = ['localhost']
 
 ## The login handler class to use.
 #c.NotebookApp.login_handler_class = 'notebook.auth.login.LoginHandler'
@@ -258,6 +227,7 @@ c.NotebookApp.ip = '0.0.0.0'
 #    from notebook.auth import passwd; passwd()
 #  
 #  The string should be of the form type:salt:hashed-password.
+#c.NotebookApp.password = ''
 c.NotebookApp.password = 'sha1:45ce11bad64a:2c87f2c6bdaf197dc940f2ea16fe79cab3c982db'
 
 ## Forces users to use a password for the Notebook server. This is useful in a
@@ -269,6 +239,7 @@ c.NotebookApp.password = 'sha1:45ce11bad64a:2c87f2c6bdaf197dc940f2ea16fe79cab3c9
 #c.NotebookApp.password_required = False
 
 ## The port the notebook server will listen on.
+#c.NotebookApp.port = 8888
 c.NotebookApp.port = 8989
 
 ## The number of additional ports to try if the specified port is not available.
@@ -276,10 +247,6 @@ c.NotebookApp.port = 8989
 
 ## DISABLED: use %pylab or %matplotlib in the notebook to enable matplotlib.
 #c.NotebookApp.pylab = 'disabled'
-
-## If True, display a button in the dashboard to quit (shutdown the notebook
-#  server).
-#c.NotebookApp.quit_button = True
 
 ## (sec) Time window used to  check the message and data rate limits.
 #c.NotebookApp.rate_limit_window = 3
@@ -307,15 +274,6 @@ c.NotebookApp.port = 8989
 ## Supply overrides for terminado. Currently only supports "shell_command".
 #c.NotebookApp.terminado_settings = {}
 
-## Set to False to disable terminals.
-#  
-#  This does *not* make the notebook server more secure by itself. Anything the
-#  user can in a terminal, they can also do in a notebook.
-#  
-#  Terminals may also be automatically disabled if the terminado package is not
-#  available.
-#c.NotebookApp.terminals_enabled = True
-
 ## Token used for authenticating first-time connections to the server.
 #  
 #  When no password is enabled, the default is to generate a new, random token.
@@ -336,14 +294,13 @@ c.NotebookApp.port = 8989
 ## DEPRECATED, use tornado_settings
 #c.NotebookApp.webapp_settings = {}
 
-## Specify Where to open the notebook on startup. This is the `new` argument
-#  passed to the standard library method `webbrowser.open`. The behaviour is not
-#  guaranteed, but depends on browser support. Valid values are:
-#  
-#   - 2 opens a new tab,
-#   - 1 opens a new window,
-#   - 0 opens in an existing window.
-#  
+## Specify Where to open the notebook on startup. This is the
+#  `new` argument passed to the standard library method `webbrowser.open`.
+#  The behaviour is not guaranteed, but depends on browser support. Valid
+#  values are:
+#      2 opens a new tab,
+#      1 opens a new window,
+#      0 opens in an existing window.
 #  See the `webbrowser.open` documentation for details.
 #c.NotebookApp.webbrowser_open_new = 2
 
@@ -513,7 +470,7 @@ c.NotebookApp.port = 8989
 #c.Session.unpacker = 'json'
 
 ## Username for the Session. Default is your system username.
-#c.Session.username = 'cloudera'
+#c.Session.username = 'username'
 
 #------------------------------------------------------------------------------
 # MultiKernelManager(LoggingConfigurable) configuration
@@ -560,15 +517,6 @@ c.NotebookApp.port = 8989
 ## The interval (in seconds) on which to check for idle kernels exceeding the
 #  cull timeout value.
 #c.MappingKernelManager.cull_interval = 300
-
-## Timeout for giving up on a kernel (in seconds).
-#  
-#  On starting and restarting kernels, we check whether the kernel is running and
-#  responsive by sending kernel_info_requests. This sets the timeout in seconds
-#  for how long the kernel can take before being presumed dead.  This affects the
-#  MappingKernelManager (which handles kernel restarts)  and the
-#  ZMQChannelsHandler (which handles the startup).
-#c.MappingKernelManager.kernel_info_timeout = 60
 
 ## 
 #c.MappingKernelManager.root_dir = ''
@@ -717,6 +665,10 @@ c.NotebookApp.port = 8989
 ## The hashing algorithm used to sign notebooks.
 #c.NotebookNotary.algorithm = 'sha256'
 
+## The number of notebook signatures to cache. When the number of signatures
+#  exceeds this value, the oldest 25% of signatures will be culled.
+#c.NotebookNotary.cache_size = 65535
+
 ## The sqlite file in which to store notebook signatures. By default, this will
 #  be in your Jupyter data directory. You can set it to ':memory:' to disable
 #  sqlite writing to the filesystem.
@@ -727,10 +679,6 @@ c.NotebookApp.port = 8989
 
 ## The file where the secret key is stored.
 #c.NotebookNotary.secret_file = ''
-
-## A callable returning the storage backend for notebook signatures. The default
-#  uses an SQLite database.
-#c.NotebookNotary.store_factory = traitlets.Undefined
 
 #------------------------------------------------------------------------------
 # KernelSpecManager(LoggingConfigurable) configuration
