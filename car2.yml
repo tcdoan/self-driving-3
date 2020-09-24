@@ -14,6 +14,7 @@ dependencies:
 - scipy=1.0.0
 - tqdm=4.19.4
 - h5py=2
+- pillow
 - pip=9.0.1
 - pip:
   - udacity-pa==0.2
