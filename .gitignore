@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+.ipynb_checkpoints
 
 # Compiled Object files
 *.slo
