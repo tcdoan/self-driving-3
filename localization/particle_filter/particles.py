@@ -109,7 +109,7 @@ class robot:
 
 N = 1000
 p = [robot() for i in range(N)]
-
-#enter code here
-
 print(len(p))
+print(p[:10])
+p = [robot.move(.1, 5) for robot in p]
+print(p[:10])
