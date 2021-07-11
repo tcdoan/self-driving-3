@@ -104,14 +104,51 @@ def eval(r, p):
     return sum / float(len(p))
 
 ####   DON'T MODIFY ANYTHING ABOVE HERE! ENTER CODE BELOW ####
+# myrobot = robot()
+# myrobot.set_noise(5.0, 0.1, 5.0)
+
+# myrobot.set(30.0, 50.0, pi/2)
+# myrobot = myrobot.move(-pi/2, 15.0)
+# mesurement = myrobot.sense()
+# print(mesurement)
+
+# myrobot = myrobot.move(-pi/2, 10.0)
+# mesurement = myrobot.sense()
+# print(mesurement)
+
+T = 100
 myrobot = robot()
-myrobot.set_noise(5.0, 0.1, 5.0)
 
-myrobot.set(30.0, 50.0, pi/2)
-myrobot = myrobot.move(-pi/2, 15.0)
-mesurement = myrobot.sense()
-print(mesurement)
+N = 1000
+p = []
+p = [robot() for i in range(N)]
+[x.set_noise(0.05, 0.05, 5.0) for x in p]
 
-myrobot = myrobot.move(-pi/2, 10.0)
-mesurement = myrobot.sense()
-print(mesurement)
+for k in range(T):
+    myrobot = myrobot.move(0.1, 5.0)
+    Z = myrobot.sense()
+
+    p = [x.move(0.1, 5) for x in p]
+
+    w = [x.measurement_prob(Z) for x in p]
+    w = [x/sum(w) for x in w]
+
+    p2 = []
+
+    # Resampleing algorithm https://youtu.be/wNQVo6uOgYA
+    # https://youtu.be/aHLslaWO-AQ
+
+    mw = max(w)
+    index = random.randint(0, N-1)
+    beta = 0.0
+
+    for i in range(N):
+        beta += random.uniform(0, 2*mw)
+        while w[index] < beta:
+            beta -= w[index]
+            index = (index + 1) % N
+        p2.append(p[index])
+
+    p = p2
+
+print(p[:20])
