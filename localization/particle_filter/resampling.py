@@ -118,5 +118,18 @@ p = [r.move(.1, 5) for r in p]
 w = [r.measurement_prob(Z) for r in p] # importance weights
 #print(w)
 
-p = random.choices(p, w, k=N)
-print(p)
+# p = random.choices(p, w, k=N)
+# print(p)
+
+p3 = []
+index = random.randint(0,N-1)
+beta = 0.0
+maxW = max(w)
+for i in range(N):
+    beta += random.uniform(0, 2*maxW)
+    while beta > w[index]:
+        beta -= w[index]
+        index = (index+1) % N 
+    p3.append(p[index])
+
+print(p3)
