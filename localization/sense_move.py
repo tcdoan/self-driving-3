@@ -2,7 +2,7 @@
 
 p=[0.2, 0.2, 0.2, 0.2, 0.2]
 world=['green', 'red', 'red', 'green', 'green']
-measurements = ['red', 'green']
+measurements = ['red', 'red']
 motions = [1,1]
 pHit = 0.6
 pMiss = 0.2
