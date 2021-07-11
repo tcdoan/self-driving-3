@@ -96,6 +96,15 @@ class robot:
     def __repr__(self):
         return '[x=%.6s y=%.6s orient=%.6s]' % (str(self.x), str(self.y), str(self.orientation))
 
+def eval(r, p):
+    sum = 0.0;
+    for i in range(len(p)): # calculate mean error
+        dx = (p[i].x - r.x + (world_size/2.0)) % world_size - (world_size/2.0)
+        dy = (p[i].y - r.y + (world_size/2.0)) % world_size - (world_size/2.0)
+        err = sqrt(dx * dx + dy * dy)
+        sum += err
+    return sum / float(len(p))
+
 
 #myrobot = robot()
 #myrobot.set_noise(5.0, 0.1, 5.0)
@@ -123,7 +132,7 @@ for t in range(T):
     #print(w)
 
     p = random.choices(p, w, k=N)
-    # print(p)
+    print(eval(myrobot, p))
 
 # p3 = []
 # index = random.randint(0,N-1)
@@ -136,4 +145,4 @@ for t in range(T):
 #         index = (index+1) % N 
 #     p3.append(p[index])
 
-print(p)
+#print(p)
