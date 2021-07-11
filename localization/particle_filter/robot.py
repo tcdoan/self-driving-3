@@ -116,6 +116,7 @@ def eval(r, p):
 
 myrobot = robot()
 myrobot.set(30.0, 50.0, pi/2)
+myrobot.set_noise(5.0, 0.1, 5.0)
 myrobot = myrobot.move(-pi/2, 15.0)
 print(myrobot.sense())
 myrobot = myrobot.move(-pi/2, 10.0)
