@@ -121,9 +121,10 @@ N = 1000
 p = [robot() for i in range(N)]
 [r.set_noise(0.05, 0.05, 5.0) for r in p]
 
-T = 10
+T = 100
 
 for t in range(T):
+    print(eval(myrobot, p))
     myrobot = myrobot.move(0.1, 5.0)
     Z = myrobot.sense()
     p = [r.move(.1, 5) for r in p]
@@ -132,7 +133,8 @@ for t in range(T):
     #print(w)
 
     p = random.choices(p, w, k=N)
-    print(eval(myrobot, p))
+
+print(eval(myrobot, p))
 
 # p3 = []
 # index = random.randint(0,N-1)
