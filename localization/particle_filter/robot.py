@@ -93,7 +93,6 @@ class robot:
     def __repr__(self):
         return '[x=%.6s y=%.6s orient=%.6s]' % (str(self.x), str(self.y), str(self.orientation))
 
-
 def eval(r, p):
     sum = 0.0;
     for i in range(len(p)): # calculate mean error
@@ -124,6 +123,7 @@ p = []
 p = [robot() for i in range(N)]
 [x.set_noise(0.05, 0.05, 5.0) for x in p]
 
+errors = []
 for k in range(T):
     myrobot = myrobot.move(0.1, 5.0)
     Z = myrobot.sense()
@@ -131,7 +131,7 @@ for k in range(T):
     p = [x.move(0.1, 5) for x in p]
 
     w = [x.measurement_prob(Z) for x in p]
-    w = [x/sum(w) for x in w]
+    # w = [x/sum(w) for x in w]
 
     p2 = []
 
@@ -150,5 +150,8 @@ for k in range(T):
         p2.append(p[index])
 
     p = p2
+    errors.append(eval(myrobot, p))
 
-print(p[:20])
+
+# print(p[:20])
+print(errors)
