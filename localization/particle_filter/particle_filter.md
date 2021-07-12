@@ -16,6 +16,14 @@ During the prediction step we add the control input (yaw rate & velocity) for al
 
 ![Particle Filter Prediction Step](filter_prediction.png)
 
+![Particle Filter Prediction Update](filter_prediction_update.png)
+
+Example: Given the car’s last position was at $(102m, 65m)$ with a heading of $\frac{5pi}{8} radians$, the car’s velocity was 110 $\frac{m}{s} $, and the car’s yaw rate was $\frac{pi}{8} \frac{rad}{s} $ over the last 0.1 seconds, what is the car’s new position and heading?
+
+- New position $x_f = 102 + \frac{110}{pi/8}[sin(\frac{5pi}{8} + \frac{pi}{8}*0.1) - sin(\frac{5pi}{8})] = 97.59$
+- New position $y_f = 65 + \frac{110}{pi/8}[cos(\frac{5pi}{8}) - cos(\frac{5pi}{8} + \frac{pi}{8}*0.1))] =  75.0774$
+- New heading $\theta_f = \frac{5pi}{8} + \frac{pi}{8}*0.1 = \frac{5.1pi}{8} = 2.002765$
+
 ### Update
 During the update step, we update our particle weights using map landmark positions and feature measurements.
 
