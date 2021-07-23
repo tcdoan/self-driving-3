@@ -38,12 +38,9 @@ void printSamples
 
     for (int i = 0; i < 3; ++i) 
     {
-        double sample_x, sample_y, sample_theta;
-
-        // TODO: Sample from these normal distributions like this: 
-        sample_x = dist_x(gen);
-        sample_y = dist_y(gen);
-        sample_theta = dist_theta(gen);
+        double sample_x = dist_x(gen);
+        double sample_y = dist_y(gen);
+        double sample_theta = dist_theta(gen);
             
         std::cout << "Sample " << i + 1 << " " << sample_x << " " << sample_y << " " 
                     << sample_theta << std::endl;
