@@ -34,16 +34,21 @@ delta_name = ['^', '<', 'v', '>']
 def search(grid, init, goal, cost):
     queue = [init]
     costs = {(init[0], init[1]) : 0}
+    visited = {(init[0], init[1])}
+    totalCost = 0
     while not len(queue) == 0:
         y, x = queue.pop(0)
         if [y, x] == goal:
+            print('totalCost', totalCost)
             return [costs[(y, x)], y, x]
         for i in range(len(delta_name)):
             dY, dX = delta[i]
             newY, newX = y+dY, x+dX
-            if newY < len(grid) and newY >=0 and newX < len(grid[0]) and newX >= 0 and grid[newY][newX] == 0:
-                    costs[(newY, newX)] = costs[(y, x)] + cost
-                    queue += [[newY, newX]]
+            if newY < len(grid) and newY >=0 and newX < len(grid[0]) and newX >= 0 and grid[newY][newX] == 0 and (newY, newX) not in visited:
+                visited.add((newY, newX))
+                totalCost += cost
+                costs[(newY, newX)] = costs[(y, x)] + cost
+                queue += [[newY, newX]]
 
     return 'fail'
 
