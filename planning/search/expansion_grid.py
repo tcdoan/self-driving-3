@@ -34,7 +34,6 @@ def search(grid,init,goal,cost):
 
     while len(pq) != 0:
         pq.sort()
-        pq.reverse()
         oldCost, currY, currX = pq.pop(0)
         if [currY, currX] == goal:
             print(numVisited)
