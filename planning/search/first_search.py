@@ -45,15 +45,18 @@ def search(grid,init,goal,cost):
     pq = [tuple(init)]
     visited = {tuple(init)}
     costs = {tuple(init):0}
+    numVisited = 0
 
     while len(pq) != 0:
         curr = pq.pop(0)
         if list(curr) == goal:
+            print(numVisited)
             return [costs[curr]] + list(curr)
         for [dX, dY] in delta: 
             found = (curr[0]+dX, curr[1]+dY)
             if found not in visited and inBounds(grid, found):
                 visited.add(found)
+                numVisited += 1
                 pq.append(found)
                 costs[found] = costs[curr] + cost
 
