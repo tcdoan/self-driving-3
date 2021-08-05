@@ -9,6 +9,7 @@
 # If there is no valid path from the start point
 # to the goal, your function should return the string
 # 'fail'
+# Solution: https://www.youtube.com/embed/cl8Kdkr4Gbg
 # ----------
 
 # Grid format:
