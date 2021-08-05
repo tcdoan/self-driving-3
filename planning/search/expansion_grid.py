@@ -38,6 +38,7 @@ def search(grid,init,goal,cost):
         if [currY, currX] == goal:
             print(numVisited)
             print([oldCost, currY, currX])
+            break
         for [dY, dX] in delta: 
             newY, newX = (currY+dY, currX+dX)
             if (newY, newX) not in visited and inBounds(grid, (newY, newX)):
