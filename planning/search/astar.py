@@ -11,6 +11,10 @@
 # 
 # If there is no path from init to goal,
 # the function should return the string 'fail'
+# 
+# Watch 1: https://youtu.be/lxCCtgHk5Vs
+# Watch 2: https://youtu.be/SSyvcCZKlqo
+# Watch 3: https://www.youtube.com/watch?v=qXZt-B7iUyw
 # ----------
 
 grid = [[0, 1, 0, 0, 0, 0],
