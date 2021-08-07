@@ -42,9 +42,9 @@ def compute_value(grid, goal, cost):
             y2, x2 = y + delta[i][0], x + delta[i][1]
             if y2 >= 0 and y2 < len(grid) and x2 >=0 and x2 < len(grid[0]):
                 if grid[y2][x2] == 0 and closed[y2][x2] == 0:
-                    value[y2][x2] = value[y][x] + 1
+                    value[y2][x2] = value[y][x] + cost
                     queue.append([y2, x2])
-    return value 
+    return value
 
 value = compute_value(grid, goal, cost)
 for i in range(len(value)):
