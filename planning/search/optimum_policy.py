@@ -27,7 +27,8 @@ delta_name = ['^', '<', 'v', '>']
 def get_neighbors(grid, cell):
     x, y = cell
     neighbors = []
-    for dX, dY in delta:
+    for i in range(len(delta)):
+        dX, dY = delta[i]
         newX, newY = x+dX, y+dY
         if newX >= len(grid) or newX < 0:
             continue
@@ -35,27 +36,39 @@ def get_neighbors(grid, cell):
             continue
         if grid[newX][newY] == 1:
             continue
-        neighbors.append([newX, newY])
+        neighbors.append(i)
     return neighbors
 
 def compute_value(grid,goal,cost):
     value = [[99 for col in range(len(grid[0]))] for row in range(len(grid))]
     x,y = goal
     value[x][y] = 0
-
-    queue = get_neighbors(grid, goal)
+    queue = [[x+delta[i][0], y+delta[i][1]] for i in get_neighbors(grid, goal)]
     while len(queue) != 0:
         curr = queue.pop(0)
         minCost = 99
-        for newX, newY in get_neighbors(grid, curr):
+        for i in get_neighbors(grid, curr):
+            newX, newY = curr[0]+delta[i][0], curr[1]+delta[i][1]
             if value[newX][newY] == 99:
                 queue.append([newX, newY])
             else: 
                 minCost = min(minCost, value[newX][newY])
         value[curr[0]][curr[1]] = minCost + cost
-
     return value 
 
-value = compute_value(grid, goal, cost)
-for i in range(len(value)):
-    print(value[i])
+def optimum_policy(grid,goal,cost):
+    value = compute_value(grid, goal, cost)
+    policy = [[' ' for col in range(len(grid[0]))] for row in range(len(grid))]
+
+    for x in range(len(grid)): 
+        for y in range(len(grid[0])):
+            if value[x][y] != 99:
+                minVal, minIdx = min([[value[x+delta[i][0]][y+delta[i][1]], i] for i in get_neighbors(grid, [x,y])])
+                policy[x][y] = delta_name[minIdx]
+
+    policy[goal[0]][goal[1]] = '*'
+    return policy
+
+policy = optimum_policy(grid, goal, cost)
+for i in range(len(policy)):
+    print(policy[i])
