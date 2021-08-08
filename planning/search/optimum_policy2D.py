@@ -1,6 +1,7 @@
 # ----------
 # User Instructions:
 # https://youtu.be/bQA2ELDNmmg
+# https://youtu.be/M7ZJ74RVHqo
 #
 # Implement the function optimum_policy2D below.
 #
@@ -18,6 +19,7 @@ forward = [[-1,  0], # go up
            [ 0, -1], # go left
            [ 1,  0], # go down
            [ 0,  1]] # go right
+
 forward_name = ['up', 'left', 'down', 'right']
 
 # action has 3 values: right turn, no turn, left turn
@@ -27,7 +29,7 @@ action_name = ['R', '#', 'L']
 # EXAMPLE INPUTS:
 # grid format:
 #     0 = navigable space
-#     1 = unnavigable space 
+#     1 = unnavigable space
 grid = [[1, 1, 1, 0, 0, 0],
         [1, 1, 1, 0, 1, 0],
         [0, 0, 0, 0, 0, 0],
@@ -58,6 +60,24 @@ cost = [2, 1, 20] # cost has 3 values, corresponding to making
 # modify code below
 # ----------------------------------------
 
-def optimum_policy2D(grid,init,goal,cost):
+def optimum_policy2D(grid, init, goal, cost):
+    policy = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
+    value = [
+                [[999 for row in range(len(grid[0]))] for col in range(len(grid))],
+                [[999 for row in range(len(grid[0]))] for col in range(len(grid))],
+                [[999 for row in range(len(grid[0]))] for col in range(len(grid))],
+                [[999 for row in range(len(grid[0]))] for col in range(len(grid))]
+            ]
+    change = True
+    while change:
+        change = False
+        for y in range(len(grid)):
+            for x in range(len(grid[0])):
+                if goal == [y, x]:
+                    if value[x][y] > 0:
+                       value[x][y] = 0
+                       policy[x][y] = '*'
+                       change = True
+                    
 
-    return policy2D
+    return policy
