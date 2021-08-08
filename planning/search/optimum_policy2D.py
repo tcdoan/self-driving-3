@@ -74,10 +74,16 @@ def optimum_policy2D(grid, init, goal, cost):
         for y in range(len(grid)):
             for x in range(len(grid[0])):
                 if goal == [y, x]:
-                    if value[x][y] > 0:
-                       value[x][y] = 0
-                       policy[x][y] = '*'
-                       change = True
+                    for h in range(len(forward)):
+                        if value[h][x][y] > 0:
+                            value[h][x][y] = 0
+                            policy[x][y] = '*'
+                            change = True
+                elif grid[y][x] == 0:
+                    for h in range(len(forward)):
+                        for a in range(len(action)):
+                            d = forward[h]
+                            actionCost = cost[a]
+                            x2 = x + delta
                     
-
     return policy
