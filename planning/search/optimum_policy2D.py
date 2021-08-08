@@ -75,15 +75,51 @@ def optimum_policy2D(grid, init, goal, cost):
             for x in range(len(grid[0])):
                 if goal == [y, x]:
                     for h in range(len(forward)):
-                        if value[h][x][y] > 0:
-                            value[h][x][y] = 0
-                            policy[x][y] = '*'
+                        if value[h][y][x] > 0:
+                            value[h][y][x] = 0
+                            policy[y][x] = '*'
                             change = True
                 elif grid[y][x] == 0:
                     for h in range(len(forward)):
                         for a in range(len(action)):
-                            d = forward[h]
-                            actionCost = cost[a]
-                            x2 = x + delta
-                    
+                            h2 = (h + action[a]) % len(forward)
+                            delta = forward[h2]
+                            y2 = y + delta[0]
+                            x2 = x + delta[1]
+                            if y2 >= 0 and y2 < len(grid) and x2 >= 0 and x2 < len(grid[0]) and grid[y2][x2] == 0:
+                                v2 = value[h2][y2][x2] + cost[a]
+                                if v2 < value[h][y][x]:
+                                    change = True
+                                    value[h][y][x] = v2
+
+    for h in range(len(value)):
+        for y in range(len(value)):
+            print(value[h][y])
+        print("----------------------------------------------")
+
+    y, x, h = init
+    while [y, x] != goal:
+        minV, minA = 999, -1
+        for a in range(len(action)):
+            h2 = (h + action[a]) % len(forward)
+            delta = forward[h2]
+            y2 = y + delta[0]
+            x2 = x + delta[1]
+            if y2 >= 0 and y2 < len(grid) and x2 >= 0 and x2 < len(grid[0]) and grid[y2][x2] == 0:
+                if value[h2][y2][x2] + cost[a] < minV:
+                    minV = value[h2][y2][x2] + cost[a]
+                    minA = a
+        if minA == -1:
+            return 'Failed'
+        
+        policy[y][x] = action_name[minA]
+        h = (h + action[minA]) % len(forward)
+        delta = forward[h]
+        y = y + delta[0]
+        x = x + delta[1]
+
     return policy
+
+policy = optimum_policy2D(grid, init, goal, cost)
+for i in range(len(policy)):
+    print(policy[i])
