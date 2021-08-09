@@ -3,9 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "../../sensor-fusion/kalman_filters/Eigen/Dense"
+#include <unordered_map>
 
-using Eigen::ArrayXd;
 using std::string;
 using std::vector;
 
@@ -34,6 +33,21 @@ public:
     string predict(const vector<double> &sample);
 
     vector<string> possible_labels = {"left", "keep", "right"};
+private:
+
+    int num_labels;
+    int state_size;
+
+    struct GaussianVar {
+        double mean = 0.0;
+        double std_dev = 00;
+    };
+
+    vector<double> priors;
+    vector<vector<GaussianVar>> gaussian_vars;
+    std::unordered_map<string, int> label_to_idx;
+
+    double compute_probability(double value, int label, int state);
 };
 
 #endif // CLASSIFIER_H

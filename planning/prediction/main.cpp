@@ -1,4 +1,5 @@
 #include <fstream>
+#include<sstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,10 +16,10 @@ vector<vector<double> > Load_State(string file_name);
 vector<string> Load_Label(string file_name);
 
 int main() {
-  vector< vector<double> > X_train = Load_State("./train_states.txt");
-  vector< vector<double> > X_test  = Load_State("./test_states.txt");
-  vector< string > Y_train = Load_Label("./train_labels.txt");
-  vector< string > Y_test  = Load_Label("./test_labels.txt");
+  vector< vector<double> > X_train = Load_State("./pred-data/train_states.txt");
+  vector< vector<double> > X_test  = Load_State("./pred-data/test_states.txt");
+  vector< string > Y_train = Load_Label("./pred-data/train_labels.txt");
+  vector< string > Y_test  = Load_Label("./pred-data/test_labels.txt");
     
   cout << "X_train number of elements " << X_train.size() << endl;
   cout << "X_train element size " << X_train[0].size() << endl;
@@ -39,7 +40,8 @@ int main() {
     if (predicted.compare(Y_test[i]) == 0) {
       score += 1;
     }
-  }
+  }    std::cout << "hello" << std::endl;
+
 
   float fraction_correct = float(score) / Y_test.size();
   cout << "You got " << (100*fraction_correct) << " correct" << endl;

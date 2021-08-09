@@ -2,17 +2,21 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <numeric>
+#include <iostream>
 
-using Eigen::ArrayXd;
 using std::string;
 using std::vector;
 
 // Initializes GNB
-GNB::GNB()
+GNB::GNB(): num_labels(3), state_size(4)
 {
-    /**
-   * TODO: Initialize GNB, if necessary. May depend on your implementation.
-   */
+    priors = vector<double>(num_labels);
+    gaussian_vars = vector<vector<GaussianVar>>(num_labels, vector<GaussianVar>(state_size));
+    for(int i = 0; i < num_labels; i++) {
+        label_to_idx[possible_labels[i]] = i;
+    }
 }
 
 GNB::~GNB() {}
@@ -33,6 +37,31 @@ void GNB::train(const vector<vector<double>> &data,
    *
    * TODO: Implement the training function for your classifier.
    */
+    vector<vector<vector<double>>> sorted_data(num_labels, vector<vector<double>>(state_size, vector<double>()));
+    for(int i = 0; i < data.size(); i++) {
+        int idx = label_to_idx[labels[i]];
+        priors[idx] += 1;
+        for(int j = 0; j < state_size; j++) {
+            sorted_data[idx][j].push_back(data[i][j]);
+        }
+    }
+    for(int label = 0; label < num_labels; label++) {
+        for(int state = 0; state < state_size; state++) {
+            double size = priors[label];
+            double mean = std::accumulate(sorted_data[label][state].begin(), sorted_data[label][state].end(), 0.0) / size;
+
+            auto variance_func = [&mean, &size](double accumulator, const double& val) {
+                return accumulator + ((val - mean)*(val - mean) / (size - 1));
+            };
+            double std_dev = sqrt(std::accumulate(sorted_data[label][state].begin(), sorted_data[label][state].end(), 0.0, variance_func));
+            gaussian_vars[label][state].mean = mean;
+            gaussian_vars[label][state].std_dev = std_dev;
+        }
+        priors[label] /= data.size();
+    }
+}
+
+double GNB::compute_probability(double value, int label, int state) {
 }
 
 string GNB::predict(const vector<double> &sample)
