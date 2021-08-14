@@ -10,7 +10,7 @@ double inefficiency_cost(int target_speed, int intended_lane, int final_lane,
     // Cost becomes higher for trajectories with intended lane and final lane
     //   that have traffic slower than target_speed.
     double delta_speed = (target_speed-lane_speeds[intended_lane])+(target_speed-lane_speeds[final_lane]);
-    double cost = delta_speed / target_speed;
+    double cost = delta_speed / (2*target_speed);
 
     return cost;
 }
