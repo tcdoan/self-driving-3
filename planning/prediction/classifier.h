@@ -12,6 +12,18 @@ using std::vector;
 class GNB 
 {
  public:
+  ArrayXd leftMean;
+  ArrayXd rightMean;
+  ArrayXd keepMean;
+
+  ArrayXd leftVar;
+  ArrayXd rightVar;
+  ArrayXd keepVar;
+
+  double leftPrior;
+  double rightPrior;
+  double keepPrior;
+
   GNB();
   virtual ~GNB();
 
