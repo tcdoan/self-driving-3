@@ -37,7 +37,6 @@ class Vehicle(object):
         for state in states:
             trajectory = self.generate_trajectory(state, predictions)
             if trajectory:
-                
                 cost = calculate_cost(self, trajectory, predictions)
                 costs.append({"cost" : cost, "state": state, "trajectory": trajectory})
 
@@ -203,6 +202,3 @@ class Vehicle(object):
         self.goal_lane = goal[1]
         self.goal_s = goal[0]
                             
-
-
-
