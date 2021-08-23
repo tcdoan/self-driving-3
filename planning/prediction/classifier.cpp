@@ -42,7 +42,8 @@ void GNB::train(const vector<vector<double>> &data,
         int idx = label_to_idx[labels[i]];
         priors[idx] += 1;
         for(int j = 0; j < state_size; j++) {
-            sorted_data[idx][j].push_back(data[i][j]);
+            double data_pt = (j == 1) ? fmod((data[i][j]),lane_width) : data[i][j];
+            sorted_data[idx][j].push_back(data_pt);
         }
     }
     for(int label = 0; label < num_labels; label++) {
@@ -53,15 +54,18 @@ void GNB::train(const vector<vector<double>> &data,
             auto variance_func = [&mean, &size](double accumulator, const double& val) {
                 return accumulator + ((val - mean)*(val - mean) / (size - 1));
             };
-            double std_dev = sqrt(std::accumulate(sorted_data[label][state].begin(), sorted_data[label][state].end(), 0.0, variance_func));
+            double variance = std::accumulate(sorted_data[label][state].begin(), sorted_data[label][state].end(), 0.0, variance_func);
             gaussian_vars[label][state].mean = mean;
-            gaussian_vars[label][state].std_dev = std_dev;
+            gaussian_vars[label][state].variance = variance;
         }
         priors[label] /= data.size();
     }
 }
 
 double GNB::compute_probability(double value, int label, int state) {
+    double coefficient = 1.0/(2.0*M_PI*gaussian_vars[label][state].variance);
+    double exp_factor = - pow(value-gaussian_vars[label][state].mean, 2) / (2.0*gaussian_vars[label][state].variance);
+    return coefficient*exp(exp_factor);
 }
 
 string GNB::predict(const vector<double> &sample)
@@ -76,6 +80,17 @@ string GNB::predict(const vector<double> &sample)
    *
    * TODO: Complete this function to return your classifier's prediction
    */
-
-    return this->possible_labels[1];
+    int max_label = -1;
+    double max_prob = 0.0;
+    for(int label = 0; label < num_labels; label++) {
+        double total_prob = priors[label];
+        for(int state = 0; state < state_size; state++) {
+            total_prob *= compute_probability(sample[state], label, state);
+        }
+        if(total_prob > max_prob) {
+            max_label = label;
+            max_prob = total_prob;
+        }
+    }
+    return this->possible_labels[max_label];
 }

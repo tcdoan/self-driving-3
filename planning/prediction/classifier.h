@@ -37,10 +37,11 @@ private:
 
     int num_labels;
     int state_size;
+    double lane_width = 4.0;
 
     struct GaussianVar {
         double mean = 0.0;
-        double std_dev = 00;
+        double variance = 0.0;
     };
 
     vector<double> priors;
