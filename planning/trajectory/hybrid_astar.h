@@ -12,6 +12,7 @@ public:
 
     struct maze_s {
         int g;
+        int f;
         double x;
         double y;
         double theta;
@@ -27,7 +28,7 @@ public:
 
     int idx(double float_num);
 
-    vector<maze_s> expand(const maze_s &state);
+    vector<maze_s> expand(const maze_s &state,  const vector<int> &goal);
 
     vector<maze_s> reconstruct_path
     (
@@ -43,6 +44,8 @@ public:
     );
 
 private:
+    double h(double x, double y, const vector<int> &goal);
+    int h2(double x, double y, const vector<int> &goal);
     const int NUM_THETA_CELLS = 90;
     const double SPEED = 1.45;
     const double LENGTH = 0.5;

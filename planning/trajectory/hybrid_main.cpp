@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "hybrid_breadth_first.h"
+#include "hybrid_astar.h"
 
 using std::cout;
 using std::endl;
