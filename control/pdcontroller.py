@@ -16,6 +16,7 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 # ------------------------------------------------
 # 
@@ -125,11 +126,12 @@ robot.set(0, 1, 0)
 # where differential crosstrack error (diff_CTE)
 # is given by CTE(t) - CTE(t-1)
 #
-def run(robot, tau_p, tau_d, n=100, speed=1.0):
+def run(robot, tau_p, tau_d, drift = 0, n=100, speed=1.0):
     x_trajectory = []
     y_trajectory = []
     CTE = robot.y - 0
     diff_CTE = 0
+    robot.set_steering_drift(drift)
 
     for i in range(n):
         prevCTE = CTE
@@ -150,5 +152,9 @@ def saveFigure(x_trajectory, y_trajectory, fileName):
     ax1.plot(x_trajectory, np.zeros(n), 'r', label='reference')
     fig.savefig(fileName)
 
-x_trajectory, y_trajectory = run(robot, 0.2, 3.0)
+drift = (10.0/180.0) * math.pi
+x_trajectory, y_trajectory = run(robot, 0.2, 3.0, drift)
 saveFigure(x_trajectory, y_trajectory, "PDcontroller_023")
+
+x_trajectory, y_trajectory = run(robot, 0.2, 0, drift)
+saveFigure(x_trajectory, y_trajectory, "PDcontroller_020")
