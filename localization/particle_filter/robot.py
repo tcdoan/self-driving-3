@@ -80,8 +80,7 @@ class robot:
     
     def measurement_prob(self, measurement):
         
-        # calculates how likely a measurement should be
-        
+        # calculates how likely a measurement should be        
         prob = 1.0;
         for i in range(len(landmarks)):
             dist = sqrt((self.x - landmarks[i][0]) ** 2 + (self.y - landmarks[i][1]) ** 2)
@@ -101,19 +100,6 @@ def eval(r, p):
         err = sqrt(dx * dx + dy * dy)
         sum += err
     return sum / float(len(p))
-
-####   DON'T MODIFY ANYTHING ABOVE HERE! ENTER CODE BELOW ####
-# myrobot = robot()
-# myrobot.set_noise(5.0, 0.1, 5.0)
-
-# myrobot.set(30.0, 50.0, pi/2)
-# myrobot = myrobot.move(-pi/2, 15.0)
-# mesurement = myrobot.sense()
-# print(mesurement)
-
-# myrobot = myrobot.move(-pi/2, 10.0)
-# mesurement = myrobot.sense()
-# print(mesurement)
 
 T = 100
 myrobot = robot()
@@ -151,7 +137,6 @@ for k in range(T):
 
     p = p2
     errors.append(eval(myrobot, p))
-
 
 # print(p[:20])
 print(errors)
